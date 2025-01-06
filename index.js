@@ -69,13 +69,23 @@ function onTodoStatusChange(checkboxId,titleId,todoId){
      
 }
 
-function onDeleteTodo(todoId,deleteId){
-     let todoIdEl = document.getElementById(todoId)
-     let deleteIdEl = document.getElementById(deleteId);
-     // console.log(todoIdEl);
-     // console.log(deleteId);
+function onDeleteTodo(todoId){
+     let todoIdEl = document.getElementById(todoId);
+     // console.log(todoIdEl)
      rootContainerEl.removeChild(todoIdEl);
-     todoList.shift(deleteIdEl);
+
+     let todoIndex = todoList.findIndex(function(each){
+          let eachId = "todo" + each.id;
+          if(eachId===todoId){
+               return true;
+          }
+          else{
+               return false;
+          }
+     })
+     // console.log(todoIndex);
+     todoList.splice(todoIndex,1);
+     
      
 }
 
@@ -83,8 +93,7 @@ function onAppendTodo(todo){
      let checkboxId = "checkbox" + todo.id;
      let titleId = "title" + todo.id;
      let todoId = "todo" + todo.id;
-     let deleteId = "delete" + todo.id;
-
+     
      let listContEl = document.createElement("li");
      listContEl.classList.add("list-cont");
      listContEl.id = todoId;
@@ -116,9 +125,9 @@ function onAppendTodo(todo){
 
      let deleteBtnEl = document.createElement("button");
      deleteBtnEl.classList.add("delete-btn");
-     deleteBtnEl.id = deleteId;
+     deleteBtnEl.id = todoId;
      deleteBtnEl.onclick = function(){
-          onDeleteTodo(todoId,deleteId);
+          onDeleteTodo(todoId);
      }
      labelEl.appendChild(deleteBtnEl);
 
